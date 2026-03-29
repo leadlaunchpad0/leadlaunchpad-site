@@ -54,8 +54,20 @@
       opacity: 0.7;
     }
 
-    /* Features & Pricing grids */
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; }
+    /* Grid for features & pricing */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr); /* force 4 equal columns */
+      gap: 30px;
+      margin-top: 40px;
+    }
+    @media (max-width: 1024px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+
     .card {
       background: #111;
       border: 1px solid #333;
@@ -136,6 +148,7 @@
       h1 { font-size: 42px; }
       .tagline { font-size: 20px; }
       .section-title { font-size: 32px; }
+      .grid { grid-template-columns: 1fr; } /* ensure single column on mobile */
     }
   </style>
 </head>
