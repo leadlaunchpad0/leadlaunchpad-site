@@ -27,6 +27,7 @@ export default async function handler(req, res) {
     if (!['USA', 'AU', 'AUS'].includes(upper)) return res.status(400).json({ error: 'Invalid country' });
     const priceCents = (PRICE_MAP[upper][qty] || 0) * 100;
 
+    const siteUrl = process.env.SITE_URL || req.headers.origin;
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [
@@ -40,8 +41,8 @@ export default async function handler(req, res) {
         },
       ],
       mode: 'payment',
-      success_url: `${req.headers.origin}/buy.html?success=1`,
-      cancel_url: `${req.headers.origin}/buy.html?canceled=1`,
+      success_url: `${siteUrl}/buy.html?success=1`,
+      cancel_url: `${siteUrl}/buy.html?canceled=1`,
       metadata: { country: upper, quantity: String(qty) },
     });
     res.json({ url: session.url });
