@@ -5,6 +5,7 @@
   "type": "module",
   "engines": { "node": ">=18" },
   "dependencies": {
+    "stripe": "^14.0.0",
     "googleapis": "^134.0.0",
     "resend": "^4.0.0",
     "fs-extra": "^11.2.0"
