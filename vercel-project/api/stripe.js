@@ -4,6 +4,7 @@ import { fulfillOrder } from './lib/fulfillment.js';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2024-12-18.acacia' });
 
 export default async function handler(req, res) {
+  if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' });
 
   const sig = req.headers['stripe-signature'];
@@ -11,6 +12,7 @@ export default async function handler(req, res) {
   try {
     event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
   } catch (e) {
+    console.error('Webhook signature error:', e.message);
     return res.status(400).json({ error: `Webhook Error: ${e.message}` });
   }
 
@@ -25,7 +27,7 @@ export default async function handler(req, res) {
       await sendTelegram(msg);
     } catch (err) {
       console.error('Fulfillment failed', err);
-      await sendTelegram(`❌ Fulfillment failed for order: ${err.message}\nCountry: ${country}\nQuantity: ${quantity}\nBuyer: ${buyerEmail}`);
+      await sendTelegram(`❌ Fulfillment failed: ${err.message}\nCountry: ${country}\nQuantity: ${quantity}\nBuyer: ${buyerEmail}`);
     }
   }
 
