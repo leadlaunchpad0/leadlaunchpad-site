@@ -1,53 +1,191 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Lead Launchpad – Choose Your Package</title>
+  <meta charset="UTF-8">
+  <title>Lead Launchpad – Verified B2B Leads</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #000; color: #fff; text-align: center; padding: 40px 20px; }
-    h1 { margin-bottom: 10px; }
-    p { color: #aaa; margin-bottom: 30px; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; max-width: 900px; margin: 0 auto 40px; }
-    .card { background: #111; border: 1px solid #333; border-radius: 12px; padding: 24px; }
-    .price { font-size: 28px; font-weight: bold; margin: 12px 0; }
-    .btn { display: inline-block; background: #fff; color: #000; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; margin-top: 12px; }
-    .btn:hover { background: #ddd; }
-    footer { color: #666; font-size: 12px; }
+    /* Reset & base */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #000;
+      color: #fff;
+      font-family: 'Arial Black', 'Arial Rounded MT', 'Arial', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+    /* Header */
+    header { padding: 40px 0; text-align: center; }
+    h1 {
+      font-size: 64px;
+      font-weight: 900;
+      letter-spacing: -1;
+      margin-bottom: 10px;
+    }
+    .tagline {
+      font-family: Arial, sans-serif;
+      font-weight: 300;
+      font-size: 28px;
+      opacity: 0.9;
+      margin-bottom: 40px;
+    }
+
+    /* Sections */
+    section { padding: 80px 0; }
+    .section-title {
+      font-size: 48px;
+      font-weight: 900;
+      margin-bottom: 30px;
+      position: relative;
+      display: inline-block;
+    }
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: #fff;
+      opacity: 0.7;
+    }
+
+    /* Features grid */
+    .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+    .feature-card {
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 16px;
+      padding: 30px;
+      text-align: center;
+    }
+    .feature-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 20px;
+      background: #222;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+    }
+    .feature-title {
+      font-size: 24px;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+    .feature-desc {
+      font-family: Arial, sans-serif;
+      font-weight: 300;
+      font-size: 18px;
+      opacity: 0.85;
+    }
+
+    /* Sample data */
+    .sample-btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 16px 32px;
+      border: 2px solid #fff;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 20px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .sample-btn:hover { background: #fff; color: #000; }
+
+    /* CTA */
+    .cta { text-align: center; }
+    .cta-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 20px 48px;
+      background: #fff;
+      color: #000;
+      font-weight: 900;
+      font-size: 28px;
+      border-radius: 16px;
+      transition: background 0.2s;
+    }
+    .cta-button:hover { background: #ddd; }
+
+    /* Footer */
+    footer { padding: 40px 0; text-align: center; opacity: 0.6; font-size: 14px; }
+
+    /* Bottom decorative stroke */
+    .bottom-stroke {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 12px;
+      background: #fff;
+      opacity: 0.9;
+      z-index: -1;
+    }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 42px; }
+      .tagline { font-size: 20px; }
+      .section-title { font-size: 32px; }
+    }
   </style>
 </head>
 <body>
-  <h1>Lead Launchpad</h1>
-  <p>Verified B2B leads for Australia & USA. Real emails, no placeholders.</p>
+  <header class="container">
+    <h1>Lead Launchpad</h1>
+    <p class="tagline">Verified B2B leads for Australia & USA. Real emails, no placeholders.</p>
+  </header>
 
-  <div class="grid">
-    <div class="card">
-      <h2>Starter</h2>
-      <p>500 leads</p>
-      <div class="price">$99</div>
-      <a class="btn" href="https://buy.stripe.com/price_1TFrdXKgZJvlsZFCianz3VKa">Buy Starter</a>
+  <section class="container">
+    <h2 class="section-title">What We Offer</h2>
+    <div class="features">
+      <div class="feature-card">
+        <div class="feature-icon">✓</div>
+        <h3 class="feature-title">Verified Emails</h3>
+        <p class="feature-desc">Every lead is checked for deliverability. No test@example.com.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3 class="feature-title">Fast Turnaround</h3>
+        <p class="feature-desc">24–48 hour delivery so you can contact while fresh.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌏</div>
+        <h3 class="feature-title">Australia & USA</h3>
+        <p class="feature-desc">Fresh leads daily from real trades in both countries.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📦</div>
+        <h3 class="feature-title">Flexible Quantities</h3>
+        <p class="feature-desc">From 500 to 20,000 leads, choose what fits your budget.</p>
+      </div>
     </div>
-    <div class="card">
-      <h2>Business</h2>
-      <p>1,000 leads</p>
-      <div class="price">$179</div>
-      <a class="btn" href="https://buy.stripe.com/price_1TFrdYKgZJvlsZFCvYLia8b8">Buy Business</a>
-    </div>
-    <div class="card">
-      <h2>Large</h2>
-      <p>5,000 leads</p>
-      <div class="price">$349</div>
-      <a class="btn" href="https://buy.stripe.com/price_1TFrdYKgZJvlsZFC0mzCbg8L">Buy Large</a>
-    </div>
-    <div class="card">
-      <h2>Enterprise</h2>
-      <p>20,000 leads</p>
-      <div class="price">$699</div>
-      <a class="btn" href="https://buy.stripe.com/price_1TFrdYKgZJvlsZFC0NWxHbjk">Buy Enterprise</a>
-    </div>
-  </div>
+  </section>
 
-  <footer>
-    Questions? DM us or email support@leadlaunchpad.site
+  <section class="container">
+    <h2 class="section-title">Sample Data</h2>
+    <p style="font-size: 18px; max-width: 800px; margin-bottom: 20px;">
+      We believe in transparency. Download a free sample to see exactly what you’ll get: names, categories, addresses, phone numbers, websites, and emails.
+    </p>
+    <a href="https://drive.google.com/file/d/1G92I6vo2rOnnlMnWz86Cd43pxajFt_2g/view?usp=drivesdk" target="_blank" class="sample-btn">Download Sample CSV</a>
+  </section>
+
+  <section class="container cta">
+    <h2 class="section-title">Ready to Buy?</h2>
+    <p style="font-size: 18px; margin-bottom: 30px;">Choose a package and get instant access via Stripe.</p>
+    <a href="pricing.html" class="cta-button">View Pricing</a>
+  </section>
+
+  <footer class="container">
+    <p>Lead Launchpad &copy; 2026. Questions? DM us or email support@leadlaunchpad.site</p>
   </footer>
+
+  <div class="bottom-stroke"></div>
 </body>
 </html>
