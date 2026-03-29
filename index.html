@@ -7,6 +7,7 @@
   <style>
     /* Reset & base */
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
     body {
       background: #000;
       color: #fff;
@@ -18,7 +19,7 @@
     .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
     /* Header */
-    header { padding: 40px 0; text-align: center; }
+    header { padding: 60px 0; text-align: center; }
     h1 {
       font-size: 64px;
       font-weight: 900;
@@ -53,16 +54,16 @@
       opacity: 0.7;
     }
 
-    /* Features grid */
-    .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
-    .feature-card {
+    /* Features & Pricing grids */
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; }
+    .card {
       background: #111;
       border: 1px solid #333;
       border-radius: 16px;
       padding: 30px;
       text-align: center;
     }
-    .feature-icon {
+    .icon {
       width: 80px;
       height: 80px;
       margin: 0 auto 20px;
@@ -74,17 +75,34 @@
       justify-content: center;
       font-size: 32px;
     }
-    .feature-title {
+    .card-title {
       font-size: 24px;
       margin-bottom: 12px;
       font-weight: 700;
     }
-    .feature-desc {
+    .card-desc {
       font-family: Arial, sans-serif;
       font-weight: 300;
       font-size: 18px;
       opacity: 0.85;
+      margin-bottom: 20px;
     }
+    .price {
+      font-size: 28px;
+      font-weight: bold;
+      margin: 12px 0;
+    }
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      border: 2px solid #fff;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 18px;
+      transition: background 0.2s, color 0.2s;
+      margin-top: 10px;
+    }
+    .btn:hover { background: #fff; color: #000; }
 
     /* Sample data */
     .sample-btn {
@@ -98,21 +116,6 @@
       transition: background 0.2s, color 0.2s;
     }
     .sample-btn:hover { background: #fff; color: #000; }
-
-    /* CTA */
-    .cta { text-align: center; }
-    .cta-button {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 20px 48px;
-      background: #fff;
-      color: #000;
-      font-weight: 900;
-      font-size: 28px;
-      border-radius: 16px;
-      transition: background 0.2s;
-    }
-    .cta-button:hover { background: #ddd; }
 
     /* Footer */
     footer { padding: 40px 0; text-align: center; opacity: 0.6; font-size: 14px; }
@@ -144,26 +147,26 @@
 
   <section class="container">
     <h2 class="section-title">What We Offer</h2>
-    <div class="features">
-      <div class="feature-card">
-        <div class="feature-icon">✓</div>
-        <h3 class="feature-title">Verified Emails</h3>
-        <p class="feature-desc">Every lead is checked for deliverability. No test@example.com.</p>
+    <div class="grid">
+      <div class="card">
+        <div class="icon">✓</div>
+        <h3 class="card-title">Verified Emails</h3>
+        <p class="card-desc">Every lead is checked for deliverability. No test@example.com.</p>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">⚡</div>
-        <h3 class="feature-title">Fast Turnaround</h3>
-        <p class="feature-desc">24–48 hour delivery so you can contact while fresh.</p>
+      <div class="card">
+        <div class="icon">⚡</div>
+        <h3 class="card-title">Fast Turnaround</h3>
+        <p class="card-desc">24–48 hour delivery so you can contact while fresh.</p>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">🌏</div>
-        <h3 class="feature-title">Australia & USA</h3>
-        <p class="feature-desc">Fresh leads daily from real trades in both countries.</p>
+      <div class="card">
+        <div class="icon">🌏</div>
+        <h3 class="card-title">Australia & USA</h3>
+        <p class="card-desc">Fresh leads daily from real trades in both countries.</p>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">📦</div>
-        <h3 class="feature-title">Flexible Quantities</h3>
-        <p class="feature-desc">From 500 to 20,000 leads, choose what fits your budget.</p>
+      <div class="card">
+        <div class="icon">📦</div>
+        <h3 class="card-title">Flexible Quantities</h3>
+        <p class="card-desc">From 500 to 20,000 leads, choose what fits your budget.</p>
       </div>
     </div>
   </section>
@@ -176,10 +179,34 @@
     <a href="https://drive.google.com/file/d/1G92I6vo2rOnnlMnWz86Cd43pxajFt_2g/view?usp=drivesdk" target="_blank" class="sample-btn">Download Sample CSV</a>
   </section>
 
-  <section class="container cta">
-    <h2 class="section-title">Ready to Buy?</h2>
-    <p style="font-size: 18px; margin-bottom: 30px;">Choose a package and get instant access via Stripe.</p>
-    <a href="pricing.html" class="cta-button">View Pricing</a>
+  <section id="pricing" class="container">
+    <h2 class="section-title">Pricing</h2>
+    <div class="grid">
+      <div class="card">
+        <h3 class="card-title">Starter</h3>
+        <p class="card-desc">500 verified leads</p>
+        <div class="price">$99</div>
+        <a class="btn" href="https://buy.stripe.com/fZucN6b1a9VG1sQ5Fl5Rm01">Buy Starter</a>
+      </div>
+      <div class="card">
+        <h3 class="card-title">Business</h3>
+        <p class="card-desc">1,000 verified leads</p>
+        <div class="price">$179</div>
+        <a class="btn" href="https://buy.stripe.com/eVq8wQfhq7Ny9Zm4Bh5Rm02">Buy Business</a>
+      </div>
+      <div class="card">
+        <h3 class="card-title">Large</h3>
+        <p class="card-desc">5,000 verified leads</p>
+        <div class="price">$349</div>
+        <a class="btn" href="https://buy.stripe.com/5kQaEYedm9VG9Zm5Fl5Rm03">Buy Large</a>
+      </div>
+      <div class="card">
+        <h3 class="card-title">Enterprise</h3>
+        <p class="card-desc">20,000 verified leads</p>
+        <div class="price">$699</div>
+        <a class="btn" href="https://buy.stripe.com/6oUfZid9i3xi8Vi2t95Rm04">Buy Enterprise</a>
+      </div>
+    </div>
   </section>
 
   <footer class="container">
