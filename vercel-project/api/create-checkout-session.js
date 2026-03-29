@@ -15,18 +15,18 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' });
 
-  const { country, quantity } = req.body;
-  if (!country || !quantity) return res.status(400).json({ error: 'Missing country or quantity' });
-
-  const qty = parseInt(quantity, 10);
-  const allowed = [500, 1000, 5000, 20000];
-  if (!allowed.includes(qty)) return res.status(400).json({ error: 'Invalid quantity' });
-
-  const upper = country.toUpperCase();
-  if (!['USA', 'AU', 'AUS'].includes(upper)) return res.status(400).json({ error: 'Invalid country' });
-  const priceCents = (PRICE_MAP[upper][qty] || 0) * 100; // dollars to cents
-
   try {
+    const { country, quantity } = req.body;
+    if (!country || !quantity) return res.status(400).json({ error: 'Missing country or quantity' });
+
+    const qty = parseInt(quantity, 10);
+    const allowed = [500, 1000, 5000, 20000];
+    if (!allowed.includes(qty)) return res.status(400).json({ error: 'Invalid quantity' });
+
+    const upper = country.toUpperCase();
+    if (!['USA', 'AU', 'AUS'].includes(upper)) return res.status(400).json({ error: 'Invalid country' });
+    const priceCents = (PRICE_MAP[upper][qty] || 0) * 100;
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [
@@ -46,6 +46,7 @@ export default async function handler(req, res) {
     });
     res.json({ url: session.url });
   } catch (e) {
+    console.error('Create checkout error:', e);
     res.status(500).json({ error: e.message });
   }
 }
