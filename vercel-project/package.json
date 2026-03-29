@@ -1,0 +1,10 @@
+{
+  "name": "stripe-telegram-alert",
+  "version": "0.2.0",
+  "private": true,
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "googleapis": "^134.0.0",
+    "resend": "^4.0.0"
+  }
+}
