@@ -5,67 +5,89 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Buy Leads – Lead Launchpad</title>
   <style>
-    body { font-family: system-ui, sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #000; color: #fff; }
-    h1 { margin-bottom: 10px; }
-    .packages { display: flex; flex-wrap: wrap; gap: 20px; margin-top: 20px; }
-    .package { border: 2px solid #fff; border-radius: 12px; padding: 20px; width: calc(33% - 20px); min-width: 200px; text-align: center; cursor: pointer; }
-    .package:hover { background: #222; }
-    .package.selected { border-color: #0f0; background: #111; }
-    .price { font-size: 24px; font-weight: bold; margin: 10px 0; }
-    .note { color: #aaa; font-size: 14px; margin-top: 30px; }
-    .btn { display: inline-block; margin-top: 20px; padding: 12px 24px; background: #fff; color: #000; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
-    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    body { font-family: system-ui, -apple-system, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background: #000; color: #fff; }
+    h1 { text-align: center; margin-bottom: 10px; }
+    .subtitle { text-align: center; color: #aaa; margin-bottom: 30px; }
+    .row { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; }
+    .col { flex: 1; min-width: 250px; }
+    label { display: block; margin-bottom: 5px; font-weight: bold; }
+    select, button { width: 100%; padding: 12px; font-size: 16px; border-radius: 8px; border: 2px solid #333; background: #111; color: #fff; }
+    select:focus, button:focus { outline: none; border-color: #666; }
+    .price-display { font-size: 28px; font-weight: bold; margin: 20px 0; text-align: center; }
+    .btn-checkout { background: #fff; color: #000; font-weight: bold; border: none; cursor: pointer; margin-top: 10px; }
+    .btn-checkout:disabled { opacity: 0.5; cursor: not-allowed; }
+    .note { color: #666; font-size: 14px; margin-top: 20px; text-align: center; }
+    .error { color: #f44; margin-top: 10px; text-align: center; }
+    .packages { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
+    .pkg { border: 2px solid #fff; border-radius: 12px; padding: 15px; width: 150px; text-align: center; cursor: pointer; }
+    .pkg.selected { border-color: #0f0; background: #111; }
+    .pkg h4 { margin: 5px 0; font-size: 16px; }
+    .pkg .qty { font-size: 14px; color: #ccc; }
+    .pkg .price { font-size: 18px; font-weight: bold; margin: 8px 0; }
   </style>
 </head>
 <body>
   <h1>Buy Leads</h1>
-  <p>Select country and package. After payment, your leads will be delivered via email immediately.</p>
+  <p class="subtitle">Select country and package. Instant CSV delivery after payment.</p>
 
-  <label for="country">Country</label>
-  <select id="country">
-    <option value="USA">USA</option>
-    <option value="AU">Australia</option>
-  </select>
-
-  <div class="packages">
-    <div class="package" data-quantity="500" data-price="99">
-      <h3>Starter</h3>
-      <p>500 leads</p>
-      <div class="price">$99</div>
+  <div class="row">
+    <div class="col">
+      <label for="country">Country</label>
+      <select id="country">
+        <option value="USA">USA</option>
+        <option value="AU">Australia</option>
+      </select>
     </div>
-    <div class="package" data-quantity="1000" data-price="179">
-      <h3>Business</h3>
-      <p>1,000 leads</p>
-      <div class="price">$179</div>
-    </div>
-    <div class="package" data-quantity="5000" data-price="349">
-      <h3>Large</h3>
-      <p>5,000 leads</p>
-      <div class="price">$349</div>
-    </div>
-    <div class="package" data-quantity="20000" data-price="699">
-      <h3>Enterprise</h3>
-      <p>20,000 leads</p>
-      <div class="price">$699</div>
+    <div class="col">
+      <label>Package</label>
+      <div class="packages">
+        <div class="pkg" data-quantity="500" data-price="99">
+          <h4>Starter</h4>
+          <div class="qty">500 leads</div>
+          <div class="price">$99</div>
+        </div>
+        <div class="pkg" data-quantity="1000" data-price="179">
+          <h4>Business</h4>
+          <div class="qty">1k leads</div>
+          <div class="price">$179</div>
+        </div>
+        <div class="pkg" data-quantity="5000" data-price="349">
+          <h4>Large</h4>
+          <div class="qty">5k leads</div>
+          <div class="price">$349</div>
+        </div>
+        <div class="pkg" data-quantity="20000" data-price="699">
+          <h4>Enterprise</h4>
+          <div class="qty">20k leads</div>
+          <div class="price">$699</div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <button class="btn" id="checkout" disabled>Proceed to Checkout</button>
+  <div class="price-display" id="total"></div>
+
+  <button class="btn-checkout" id="checkout" disabled>Proceed to Checkout</button>
+  <div class="error" id="error"></div>
 
   <p class="note">
-    Prices fixed. Payment via Stripe. CSV delivered instantly after sale.
+    Payment via Stripe. CSV delivered instantly to your email.
   </p>
 
   <script>
     const countrySelect = document.getElementById('country');
-    const packages = document.querySelectorAll('.package');
+    const packages = document.querySelectorAll('.pkg');
     const checkoutBtn = document.getElementById('checkout');
+    const totalEl = document.getElementById('total');
+    const errorEl = document.getElementById('error');
+
     let selectedQuantity = null;
 
     // Pre-select from URL
-    const qty = new URLSearchParams(window.location.search).get('quantity');
+    const urlParams = new URLSearchParams(window.location.search);
+    const qty = urlParams.get('quantity');
     if (qty) {
-      const pkg = document.querySelector(`.package[data-quantity="${qty}"]`);
+      const pkg = document.querySelector(`.pkg[data-quantity="${qty}"]`);
       if (pkg) selectPackage(pkg);
     }
 
@@ -75,21 +97,34 @@
       packages.forEach(p => p.classList.remove('selected'));
       pkg.classList.add('selected');
       selectedQuantity = pkg.dataset.quantity;
+      const price = pkg.dataset.price;
+      totalEl.textContent = `$${price} USD`;
       checkoutBtn.disabled = false;
+      errorEl.textContent = '';
     }
 
     checkoutBtn.addEventListener('click', async () => {
       const country = countrySelect.value;
       const quantity = parseInt(selectedQuantity, 10);
-      const API_URL = 'https://YOUR-VERCEL-PROJECT.vercel.app'; // <--- CHANGE THIS
-      const response = await fetch(`${API_URL}/api/create-checkout-session`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ country, quantity })
-      });
-      const session = await response.json();
-      if (session.url) window.location = session.url;
-      else alert('Error: ' + JSON.stringify(session));
+      const API_URL = 'https://leadlaunchpad-site.vercel.app';
+      errorEl.textContent = '';
+      checkoutBtn.disabled = true;
+      try {
+        const response = await fetch(`${API_URL}/api/create-checkout-session`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ country, quantity })
+        });
+        const session = await response.json();
+        if (session.url) {
+          window.location = session.url;
+        } else {
+          throw new Error(session.error || 'Failed to create checkout session');
+        }
+      } catch (e) {
+        errorEl.textContent = 'Error: ' + e.message;
+        checkoutBtn.disabled = false;
+      }
     });
   </script>
 </body>
