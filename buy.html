@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Buy Leads – Lead Launchpad</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #000; color: #fff; }
+    h1 { margin-bottom: 10px; }
+    .packages { display: flex; flex-wrap: wrap; gap: 20px; margin-top: 20px; }
+    .package { border: 2px solid #fff; border-radius: 12px; padding: 20px; width: calc(33% - 20px); min-width: 200px; text-align: center; cursor: pointer; }
+    .package:hover { background: #222; }
+    .package.selected { border-color: #0f0; background: #111; }
+    .price { font-size: 24px; font-weight: bold; margin: 10px 0; }
+    .note { color: #aaa; font-size: 14px; margin-top: 30px; }
+    .btn { display: inline-block; margin-top: 20px; padding: 12px 24px; background: #fff; color: #000; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+  <h1>Buy Leads</h1>
+  <p>Select country and package. After payment, your leads will be delivered via email immediately.</p>
+
+  <label for="country">Country</label>
+  <select id="country">
+    <option value="USA">USA</option>
+    <option value="AU">Australia</option>
+  </select>
+
+  <div class="packages">
+    <div class="package" data-quantity="500" data-price="99">
+      <h3>Starter</h3>
+      <p>500 leads</p>
+      <div class="price">$99</div>
+    </div>
+    <div class="package" data-quantity="1000" data-price="179">
+      <h3>Business</h3>
+      <p>1,000 leads</p>
+      <div class="price">$179</div>
+    </div>
+    <div class="package" data-quantity="5000" data-price="349">
+      <h3>Large</h3>
+      <p>5,000 leads</p>
+      <div class="price">$349</div>
+    </div>
+    <div class="package" data-quantity="20000" data-price="699">
+      <h3>Enterprise</h3>
+      <p>20,000 leads</p>
+      <div class="price">$699</div>
+    </div>
+  </div>
+
+  <button class="btn" id="checkout" disabled>Proceed to Checkout</button>
+
+  <p class="note">
+    Prices fixed. Payment via Stripe. CSV delivered instantly after sale.
+  </p>
+
+  <script>
+    const countrySelect = document.getElementById('country');
+    const packages = document.querySelectorAll('.package');
+    const checkoutBtn = document.getElementById('checkout');
+    let selectedQuantity = null;
+
+    // Pre-select from URL
+    const qty = new URLSearchParams(window.location.search).get('quantity');
+    if (qty) {
+      const pkg = document.querySelector(`.package[data-quantity="${qty}"]`);
+      if (pkg) selectPackage(pkg);
+    }
+
+    packages.forEach(p => p.addEventListener('click', () => selectPackage(p)));
+
+    function selectPackage(pkg) {
+      packages.forEach(p => p.classList.remove('selected'));
+      pkg.classList.add('selected');
+      selectedQuantity = pkg.dataset.quantity;
+      checkoutBtn.disabled = false;
+    }
+
+    checkoutBtn.addEventListener('click', async () => {
+      const country = countrySelect.value;
+      const quantity = parseInt(selectedQuantity, 10);
+      const API_URL = 'https://YOUR-VERCEL-PROJECT.vercel.app'; // <--- CHANGE THIS
+      const response = await fetch(`${API_URL}/api/create-checkout-session`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ country, quantity })
+      });
+      const session = await response.json();
+      if (session.url) window.location = session.url;
+      else alert('Error: ' + JSON.stringify(session));
+    });
+  </script>
+</body>
+</html>
